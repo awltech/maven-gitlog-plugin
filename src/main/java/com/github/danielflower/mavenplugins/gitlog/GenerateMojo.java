@@ -38,14 +38,14 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * If true, then a plain text changelog will be generated.
 	 *
-	 * @parameter default-value="true"
+	 * @parameter default-value="true" expression="${gitlog.generatePlainTextChangeLog}"
 	 */
 	private boolean generatePlainTextChangeLog;
 
 	/**
 	 * The filename of the plain text changelog, if generated.
 	 *
-	 * @parameter default-value="changelog.txt"
+	 * @parameter default-value="changelog.txt" expression="${gitlog.plainTextChangeLogFilename}"
 	 * @required
 	 */
 	private String plainTextChangeLogFilename;
@@ -54,14 +54,14 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * If true, then a markdown changelog will be generated.
 	 *
-	 * @parameter default-value="false"
+	 * @parameter default-value="false" expression="${gitlog.generateMarkdownChangeLog}"
 	 */
 	private boolean generateMarkdownChangeLog;
 
 	/**
 	 * The filename of the markdown changelog, if generated.
 	 *
-	 * @parameter default-value="changelog.md"
+	 * @parameter default-value="changelog.md" expression="${gitlog.markdownChangeLogFilename}"
 	 * @required
 	 */
 	private String markdownChangeLogFilename;
@@ -69,14 +69,14 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * If true, then a simple HTML changelog will be generated.
 	 *
-	 * @parameter default-value="true"
+	 * @parameter default-value="true" expression="${gitlog.generateSimpleHTMLChangeLog}"
 	 */
 	private boolean generateSimpleHTMLChangeLog;
 
 	/**
 	 * The filename of the simple HTML changelog, if generated.
 	 *
-	 * @parameter default-value="changelog.html"
+	 * @parameter default-value="changelog.html" expression="${gitlog.simpleHTMLChangeLogFilename}"
 	 * @required
 	 */
 	private String simpleHTMLChangeLogFilename;
@@ -86,14 +86,14 @@ public class GenerateMojo extends AbstractMojo {
 	 * This incomplete HTML page is suitable for inclusion in other webpages, for example you
 	 * may want to embed it in a wiki page.
 	 *
-	 * @parameter default-value="false"
+	 * @parameter default-value="false" expression="${gitlog.generateHTMLTableOnlyChangeLog}"
 	 */
 	private boolean generateHTMLTableOnlyChangeLog;
 
 	/**
 	 * The filename of the HTML table changelog, if generated.
 	 *
-	 * @parameter default-value="changelogtable.html"
+	 * @parameter default-value="changelogtable.html" expression="${gitlog.htmlTableOnlyChangeLogFilename}"
 	 * @required
 	 */
 	private String htmlTableOnlyChangeLogFilename;
@@ -101,14 +101,14 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * If true, then a JSON changelog will be generated.
 	 *
-	 * @parameter default-value="true"
+	 * @parameter default-value="true" expression="${gitlog.generateJSONChangeLog}"
 	 */
 	private boolean generateJSONChangeLog;
 
 	/**
 	 * The filename of the JSON changelog, if generated.
 	 *
-	 * @parameter default-value="changelog.json"
+	 * @parameter default-value="changelog.json" expression="${gitlog.jsonChangeLogFilename}"
 	 * @required
 	 */
 	private String jsonChangeLogFilename;
@@ -116,7 +116,7 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * If true, the changelog will be printed to the Maven build log during packaging.
 	 *
-	 * @parameter default-value="false"
+	 * @parameter default-value="false" expression="${gitlog.verbose}"
 	 */
 	private boolean verbose;
 
@@ -129,7 +129,7 @@ public class GenerateMojo extends AbstractMojo {
 	 *
 	 * @parameter expression="${project.issueManagement.system}"
 	 */
-	private String issueManagementSystem;
+	private String issueManagementSystem; 
 
 	/**
 	 * Used to create links to your issue tracking system for HTML reports. If unspecified, it will try to use the value
@@ -142,21 +142,21 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * Used to set date format in log messages. If unspecified, will be used default format 'yyyy-MM-dd HH:mm:ss Z'.
 	 * 
-	 * @parameter default-value=""
+	 * @parameter default-value="" expression="${gitlog.dateFormat}"
 	 */
 	private String dateFormat;
 
 	/**
 	 * If true, the changelog will include the full git message rather that the short git message
 	 *
-	 * @parameter default-value="false"
+	 * @parameter default-value="false" expression="${gitlog.fullGitMessage}"
 	 */
 	private boolean fullGitMessage;
 	
 	/**
 	 * Include in the changelog the commits after this parameter value.
 	 * 
-	 * @parameter default-value="1970-01-01 00:00:00.0 AM"
+	 * @parameter default-value="1970-01-01 00:00:00.0 AM" expression="${gitlog.includeCommitsAfter}"
 	 */
 	private Date includeCommitsAfter;
 	
