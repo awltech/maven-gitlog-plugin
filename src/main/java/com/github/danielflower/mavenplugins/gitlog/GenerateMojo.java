@@ -8,6 +8,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -142,7 +144,7 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * Used to set date format in log messages. If unspecified, will be used default format 'yyyy-MM-dd HH:mm:ss Z'.
 	 * 
-	 * @parameter default-value="" expression="${gitlog.dateFormat}"
+	 * @parameter default-value="yyyy-MM-dd HH:mm:ss Z" expression="${gitlog.dateFormat}"
 	 */
 	private String dateFormat;
 
@@ -156,9 +158,9 @@ public class GenerateMojo extends AbstractMojo {
 	/**
 	 * Include in the changelog the commits after this parameter value.
 	 * 
-	 * @parameter default-value="1970-01-01 00:00:00.0 AM" expression="${gitlog.includeCommitsAfter}"
+	 * @parameter default-value="1970-01-01 00:00:00 GMT" expression="${gitlog.includeCommitsAfter}"
 	 */
-	private Date includeCommitsAfter;
+	private String includeCommitsAfter;
 	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Generating changelog in " + outputDirectory.getAbsolutePath()
@@ -195,8 +197,18 @@ public class GenerateMojo extends AbstractMojo {
 			Formatter.setFormat(dateFormat, getLog());
 		}
 		
+		Date includeCommitsAfterDate = new Date(0);
+		
 		try {
-			generator.generate(reportTitle, includeCommitsAfter);
+			includeCommitsAfterDate = new SimpleDateFormat(dateFormat).parse(includeCommitsAfter);
+		} catch (ParseException pe) {
+			getLog().warn("Could not format date since pattern is not valid or date is not correct. Will retrieve all logs !", pe);
+		} catch (IllegalArgumentException iae) {
+			getLog().warn("Could not format date since pattern is not valid or date is not correct. Will retrieve all logs !", iae);
+		}
+		
+		try {
+			generator.generate(reportTitle, includeCommitsAfterDate);
 		} catch (IOException e) {
 			getLog().warn("Error while generating changelog.  Some changelogs may be incomplete or corrupt.", e);
 		}
