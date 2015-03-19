@@ -63,8 +63,10 @@ public class ModuleCommitFilter implements CommitFilter {
 					if (log.isDebugEnabled()) {
 						log.debug("[ModuleCommitFilter] File identified in this commit : " + diffFullPath);
 					}
-					if (diffFullPath.startsWith(this.projectBaseDir)) {
+					if (diffFullPath.startsWith(this.projectBaseDir + "/")) {
 						if (log.isDebugEnabled()) {
+							log.debug("[ModuleCommitFilter] Diff Full Path : " + diffFullPath);
+							log.debug("[ModuleCommitFilter] Project Base Dir : " + this.projectBaseDir);
 							log.debug("[ModuleCommitFilter] Accepted commit within this service : " + commit.getName());
 						}
 						tw.release();
@@ -104,8 +106,10 @@ public class ModuleCommitFilter implements CommitFilter {
 					if (log.isDebugEnabled()) {
 						log.debug("[ModuleCommitFilter] File identified in this commit : " + diffFullPath);
 					}
-					if (diffFullPath.startsWith(this.projectBaseDir)) {
+					if (diffFullPath.startsWith(this.projectBaseDir + "/")) {
 						if (log.isDebugEnabled()) {
+							log.debug("[ModuleCommitFilter] Diff Full Path : " + diffFullPath);
+							log.debug("[ModuleCommitFilter] Project Base Dir : " + this.projectBaseDir);
 							log.debug("[ModuleCommitFilter] Accepted commit within this service : " + commit.getName());
 						}
 						return true;

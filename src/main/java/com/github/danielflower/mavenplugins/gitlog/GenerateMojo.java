@@ -234,7 +234,7 @@ public class GenerateMojo extends AbstractMojo {
 				getLog());
 
 		try {
-			generator.openRepository();
+			generator.openRepository(null /*this.filterOnModules ? mavenProject.getBasedir() : null*/);
 		} catch (IOException e) {
 			getLog().warn(
 					"Error opening git repository.  Is this Maven project hosted in a git repository? "

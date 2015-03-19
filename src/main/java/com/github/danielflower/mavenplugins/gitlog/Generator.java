@@ -1,7 +1,13 @@
 package com.github.danielflower.mavenplugins.gitlog;
 
-import com.github.danielflower.mavenplugins.gitlog.filters.CommitFilter;
-import com.github.danielflower.mavenplugins.gitlog.renderers.ChangeLogRenderer;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.maven.plugin.logging.Log;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -11,13 +17,10 @@ import org.eclipse.jgit.lib.RepositoryBuilder;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTag;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.github.danielflower.mavenplugins.gitlog.filters.CommitFilter;
+import com.github.danielflower.mavenplugins.gitlog.renderers.ChangeLogRenderer;
 
 class Generator {
 
@@ -34,7 +37,7 @@ class Generator {
 		this.log = log;
 	}
 
-	public void openRepository() throws IOException, NoGitRepositoryException {
+	public void openRepository(File filter) throws IOException, NoGitRepositoryException {
 		log.debug("About to open git repository.");
 		try {
 			this.repository = new RepositoryBuilder().findGitDir().build();
@@ -42,7 +45,7 @@ class Generator {
 			throw new NoGitRepositoryException();
 		}
 		log.debug("Opened " + repository + ". About to load the commits.");
-		walk = createWalk(repository);
+		walk = createWalk(repository, filter);
 		log.debug("Loaded commits. about to load the tags.");
 		commitIDToTagsMap = createCommitIDToTagsMap(repository, walk);
 		log.debug("Loaded tag map: " + commitIDToTagsMap);
@@ -95,11 +98,15 @@ class Generator {
 		return true;
 	}
 
-	private static RevWalk createWalk(Repository repository) throws IOException {
+	private static RevWalk createWalk(Repository repository, File filter) throws IOException {
 		RevWalk walk = new RevWalk(repository);
 		ObjectId head = repository.resolve("HEAD");
 		if (head != null) {
 			// if head is null, it means there are no commits in the repository.  The walk will be empty.
+			if (filter != null) { 
+				String relative = repository.getDirectory().getParentFile().toURI().relativize(filter.toURI()).getPath();
+				walk.setTreeFilter(PathFilter.create(relative));
+			}
 			RevCommit mostRecentCommit = walk.parseCommit(head);
 			walk.markStart(mostRecentCommit);
 		}

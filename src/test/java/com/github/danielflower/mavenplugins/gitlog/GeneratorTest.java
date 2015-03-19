@@ -68,7 +68,7 @@ public class GeneratorTest {
 
 	private void generateReport(Log log, ChangeLogRenderer renderer) throws IOException, NoGitRepositoryException {
 		Generator generator = new Generator(Arrays.asList(renderer), Defaults.COMMIT_FILTERS, log);
-		generator.openRepository();
+		generator.openRepository(null);
 		generator.generate("Maven GitLog Plugin changelog");
 	}
 

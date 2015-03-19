@@ -23,7 +23,7 @@ public class ShowMojo extends AbstractMojo {
 		Generator generator = new Generator(renderers, Defaults.COMMIT_FILTERS, getLog());
 
 		try {
-			generator.openRepository();
+			generator.openRepository(null);
 		} catch (IOException e) {
 			throw new MojoExecutionException("Error opening git repository.  Is this Maven project hosted in a git repository? " +
 					"No changelog will be generated.", e);
