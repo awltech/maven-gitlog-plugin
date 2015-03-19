@@ -1,5 +1,6 @@
 package com.github.danielflower.mavenplugins.gitlog.filters;
 
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 /**
@@ -8,7 +9,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
  */
 public class MavenReleasePluginMessageFilter implements CommitFilter {
 	@Override
-	public boolean renderCommit(RevCommit commit) {
+	public boolean renderCommit(RevCommit commit, Repository repository) {
 		boolean isMavenRelease = commit.getShortMessage().startsWith("[maven-release-plugin]");
 		return !isMavenRelease;
 	}

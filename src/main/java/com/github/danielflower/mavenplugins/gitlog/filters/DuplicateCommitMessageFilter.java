@@ -1,5 +1,6 @@
 package com.github.danielflower.mavenplugins.gitlog.filters;
 
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 public class DuplicateCommitMessageFilter implements CommitFilter {
@@ -7,7 +8,7 @@ public class DuplicateCommitMessageFilter implements CommitFilter {
 	private RevCommit previous;
 
 	@Override
-	public boolean renderCommit(RevCommit commit) {
+	public boolean renderCommit(RevCommit commit, Repository repository) {
 		boolean isDuplicate = previous != null
 				&& messagesEquivalent(commit.getShortMessage(), previous.getShortMessage());
 		previous = commit;

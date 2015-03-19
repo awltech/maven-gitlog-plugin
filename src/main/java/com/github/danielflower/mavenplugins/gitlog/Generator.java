@@ -23,6 +23,7 @@ class Generator {
 
 	private final List<ChangeLogRenderer> renderers;
 	private RevWalk walk;
+	private Repository repository;
 	private Map<String, List<RevTag>> commitIDToTagsMap;
 	private final List<CommitFilter> commitFilters;
 	private final Log log;
@@ -35,9 +36,8 @@ class Generator {
 
 	public void openRepository() throws IOException, NoGitRepositoryException {
 		log.debug("About to open git repository.");
-		Repository repository;
 		try {
-			repository = new RepositoryBuilder().findGitDir().build();
+			this.repository = new RepositoryBuilder().findGitDir().build();
 		} catch (IllegalArgumentException iae) {
 			throw new NoGitRepositoryException();
 		}
@@ -87,7 +87,7 @@ class Generator {
 
 	private boolean show(RevCommit commit) {
 		for (CommitFilter commitFilter : commitFilters) {
-			if (!commitFilter.renderCommit(commit)) {
+			if (!commitFilter.renderCommit(commit, repository)) {
 				log.debug("Commit filtered out by " + commitFilter.getClass().getSimpleName());
 				return false;
 			}

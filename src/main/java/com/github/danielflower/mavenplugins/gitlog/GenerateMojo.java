@@ -11,7 +11,10 @@ import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 
+import com.github.danielflower.mavenplugins.gitlog.filters.CommitFilter;
+import com.github.danielflower.mavenplugins.gitlog.filters.ModuleCommitFilter;
 import com.github.danielflower.mavenplugins.gitlog.renderers.ChangeLogRenderer;
 import com.github.danielflower.mavenplugins.gitlog.renderers.Formatter;
 import com.github.danielflower.mavenplugins.gitlog.renderers.GitHubIssueLinkConverter;
@@ -166,6 +169,16 @@ public class GenerateMojo extends AbstractMojo {
 	 * @parameter expression="${project.issueManagement.url}"
 	 */
 	private String issueManagementUrl;
+	
+	/**
+	 * @parameter expression="${project}"
+	 */
+	private MavenProject mavenProject;
+	
+	/**
+	 * @parameter expression="${gitlog.filterOnModules}" default-value="false"
+	 */
+	private boolean filterOnModules;
 
 	/**
 	 * Used to set date format in log messages. If unspecified, will be used
@@ -210,8 +223,14 @@ public class GenerateMojo extends AbstractMojo {
 					e);
 			return;
 		}
-
-		Generator generator = new Generator(renderers, Defaults.COMMIT_FILTERS,
+		List<CommitFilter> commitFilters = new ArrayList<CommitFilter>();
+		commitFilters.addAll(Defaults.COMMIT_FILTERS);
+		if (this.filterOnModules && mavenProject != null) {
+			getLog().info(
+					"Filter on commits, to consider only the ones in given service is enabled.");
+			commitFilters.add(new ModuleCommitFilter(mavenProject.getBasedir().getPath(), getLog()));
+		}
+		Generator generator = new Generator(renderers,commitFilters,
 				getLog());
 
 		try {
