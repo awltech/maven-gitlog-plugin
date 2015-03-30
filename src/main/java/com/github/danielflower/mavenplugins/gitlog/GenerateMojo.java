@@ -37,6 +37,10 @@ import com.github.danielflower.mavenplugins.gitlog.renderers.SimpleHtmlRenderer;
 public class GenerateMojo extends AbstractMojo {
 
 	/**
+	 * @parameter expression="${project}"
+	 */
+	private MavenProject project;
+	/**
 	 * The directory to put the reports in. Defaults to the project build
 	 * directory (normally target).
 	 *
@@ -234,7 +238,8 @@ public class GenerateMojo extends AbstractMojo {
 				getLog());
 
 		try {
-			generator.openRepository(null /*this.filterOnModules ? mavenProject.getBasedir() : null*/);
+			generator.openRepository(project.getFile().getAbsolutePath());
+
 		} catch (IOException e) {
 			getLog().warn(
 					"Error opening git repository.  Is this Maven project hosted in a git repository? "

@@ -8,9 +8,10 @@ import org.eclipse.jgit.revwalk.RevCommit;
  */
 public class MergeCommitFilter implements CommitFilter {
 	@Override
-	public boolean renderCommit(RevCommit commit, Repository repository) {
+	public boolean renderCommit(RevCommit commit,Repository repository) {
 		// A merge has two parents. Non-merge commits have a single parent,
 		// or no parents for the first commit in the repository.
 		return commit.getParentCount() < 2;
 	}
 }
+

@@ -1,3 +1,4 @@
+
 package com.github.danielflower.mavenplugins.gitlog.filters;
 
 import org.eclipse.jgit.lib.Repository;
@@ -14,3 +15,4 @@ public class MavenReleasePluginMessageFilter implements CommitFilter {
 		return !isMavenRelease;
 	}
 }
+

@@ -21,3 +21,4 @@ public class DuplicateCommitMessageFilter implements CommitFilter {
 		return message1.equals(message2);
 	}
 }
+
