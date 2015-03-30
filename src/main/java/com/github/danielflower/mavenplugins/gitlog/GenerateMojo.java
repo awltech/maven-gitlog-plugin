@@ -229,11 +229,11 @@ public class GenerateMojo extends AbstractMojo {
 		}
 		List<CommitFilter> commitFilters = new ArrayList<CommitFilter>();
 		commitFilters.addAll(Defaults.COMMIT_FILTERS);
-		if (this.filterOnModules && mavenProject != null) {
-			getLog().info(
-					"Filter on commits, to consider only the ones in given service is enabled.");
-			commitFilters.add(new ModuleCommitFilter(mavenProject.getBasedir().getPath(), getLog()));
-		}
+//		if (this.filterOnModules && mavenProject != null) {
+//			getLog().info(
+//					"Filter on commits, to consider only the ones in given service is enabled.");
+//			commitFilters.add(new ModuleCommitFilter(mavenProject.getBasedir().getPath(), getLog()));
+//		}
 		Generator generator = new Generator(renderers,commitFilters,
 				getLog());
 
