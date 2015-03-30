@@ -41,7 +41,6 @@ class Generator {
 
 	public void openRepository(String pomPath) throws IOException, NoGitRepositoryException {
 		log.debug("About to open git repository.");
-		Repository repository;
 		try {
 			repository = new RepositoryBuilder().findGitDir().build();
 		} catch (IllegalArgumentException iae) {
